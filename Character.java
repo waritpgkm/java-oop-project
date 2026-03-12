@@ -1,4 +1,4 @@
-class Character {
+abstract class Character {
     private String name;
     private String role;
     private double max_hp;
@@ -81,9 +81,7 @@ class Character {
         setStemina(getStemina() + delta);
     }
 
-    public void attack(Character target) {
-        // To be overridden by subclasses
-    }
+    abstract public void attack(Character target);
 
     public boolean isAlive() {
         return this.hp > 0;
