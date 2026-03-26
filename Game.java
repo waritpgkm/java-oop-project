@@ -161,14 +161,13 @@ class Game {
             return null;
         }
         if (targets.length == 1) {
-            System.out.println("Only one target available: " + targets[0].getName());
+            System.out.printf("Only one target available: %s (HP: %.1f/%.1f)%n", targets[0].getName(), targets[0].getHp(), targets[0].getMax_hp());
             return targets[0];
         }
 
         System.out.println("Choose a target:");
         for (int i = 0; i < targets.length; i++) {
-            System.out.println((i + 1) + ". " + targets[i].getName() +
-                    " (HP: " + String.format("%.1f/%.1f", targets[i].getHp(), targets[i].getMax_hp()) + ")");
+            System.out.printf("%d. %s (HP: %.1f/%.1f)%n", i + 1, targets[i].getName(), targets[i].getHp(), targets[i].getMax_hp());
         }
         System.out.print("Choose (1-" + targets.length + "): ");
 
@@ -182,10 +181,18 @@ class Game {
     }
 
     private static Character chooseAlly(Character[] allies) {
+        if (allies.length == 0) {
+            System.out.println("No allies available!");
+            return null;
+        }
+        if (allies.length == 1) {
+            System.out.printf("Only one ally available: %s (HP: %.1f/%.1f)%n", allies[0].getName(), allies[0].getHp(), allies[0].getMax_hp());
+            return allies[0];
+        }
+
         System.out.println("Choose an ally to heal:");
         for (int i = 0; i < allies.length; i++) {
-            System.out.println((i + 1) + ". " + allies[i].getName() +
-                    " (HP: " + String.format("%.1f/%.1f", allies[i].getHp(), allies[i].getMax_hp()) + ")");
+            System.out.printf("%d. %s (HP: %.1f/%.1f)%n", i + 1, allies[i].getName(), allies[i].getHp(), allies[i].getMax_hp());
         }
         System.out.print("Choose (1-" + allies.length + "): ");
 
@@ -314,9 +321,19 @@ class Game {
 
     private static void endGame() {
         if (playerTeam.isDefeated()) {
-            System.out.println("BOT WINS! Better luck next time!");
+            System.out.println("""
+
+                +----------------------------------+
+                | YOU LOSE! Better luck next time! |
+                +----------------------------------+
+            """);
         } else if (botTeam.isDefeated()) {
-            System.out.println("YOU WIN! Congratulations!");
+            System.out.println("""
+                
+                +---------------------------+
+                | YOU WIN! Congratulations! |
+                +---------------------------+
+            """);
         }
         System.exit(0);
     }
