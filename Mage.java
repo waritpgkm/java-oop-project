@@ -4,7 +4,7 @@ public class Mage extends Character {
         super(name, "Mage", max_hp, max_stamina, base_atk, crit_rate, crit_multiplier);
     }
 
-    public boolean attack(Character target) {
+    public void attack(Character target) {
         if (getStemina() >= 15) {
             if (Math.random() < getCrit_rate()) {
                 System.out.printf("%s casts a spell on %s for %.1f CRITICAL damage!\n", getName(), target.getName(),
@@ -19,7 +19,6 @@ public class Mage extends Character {
         } else {
             System.out.printf("%s is too tired to cast a spell!\n", getName());
         }
-        return target.isAlive();
     }
 
     public void healing_allie(Character target) {

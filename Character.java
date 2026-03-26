@@ -101,7 +101,7 @@ abstract class Character {
         setStemina(getStemina() + delta);
     }
 
-    abstract public boolean attack(Character target);
+    abstract public void attack(Character target);
 
     public boolean isAlive() {
         return this.hp > 0;

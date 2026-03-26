@@ -4,7 +4,7 @@ public class Warrior extends Character {
         super(name, "Warrior", max_hp, max_stamina, base_atk, crit_rate, crit_multiplier);
     }
 
-    public boolean attack(Character target) {
+    public void attack(Character target) {
         if (getStemina() >= 10) {
             if (Math.random() < getCrit_rate()) {
                 System.out.printf("%s swings a sword at %s for %.1f CRITICAL damage!\n", getName(), target.getName(),
@@ -19,7 +19,6 @@ public class Warrior extends Character {
         } else {
             System.out.printf("%s is too tired to swing a sword!\n", getName());
         }
-        return target.isAlive();
     }
 
     public void ultimate(Character target) {

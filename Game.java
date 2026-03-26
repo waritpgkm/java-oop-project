@@ -2,17 +2,24 @@ import java.util.Scanner;
 
 class Game {
     private static Scanner scanner = new Scanner(System.in);
+    private static Team playerTeam;
+    private static Team botTeam;
+    private static Character[] livingPlayers;
+    private static Character[] livingBots;
 
     public static void main(String[] args) {
         // Create characters
-        Character warrior1 = new Warrior("Aragorn", 100, 50, 20, 0.1, 1.8);
-        Character mage1 = new Mage("Gandalf", 80, 60, 25, 0.1, 1.5);
-        Character warrior2 = new Warrior("Legolas", 90, 40, 18, 0.1, 1.8);
-        Character mage2 = new Mage("Saruman", 70, 70, 30, 0.1, 1.5);
+        Character warrior1 = new Warrior("Ekanan", 100, 50, 20, 0.1, 1.8);
+        Character mage1 = new Mage("Sarun", 80, 60, 30, 0.1, 1.5);
+        Character warrior2 = new Warrior("Somsak", 100, 50, 20, 0.1, 1.8);
+        Character mage2 = new Mage("Somchai", 80, 60, 30, 0.1, 1.5);
 
         // Create teams
-        Team playerTeam = new Team("Player Team", new Character[] { warrior1, mage1 });
-        Team botTeam = new Team("Bot Team", new Character[] { warrior2, mage2 });
+        playerTeam = new Team("Player Team", new Character[] { warrior1, mage1 });
+        botTeam = new Team("Bot Team", new Character[] { warrior2, mage2 });
+
+        livingPlayers = playerTeam.getLivingMembers();
+        livingBots = botTeam.getLivingMembers();
 
         System.out.println("=== WELCOME TO THE BATTLE ARENA ===");
         System.out.println("You control the Player Team!");
@@ -29,12 +36,12 @@ class Game {
             displayTeams(playerTeam, botTeam);
 
             System.out.println("YOUR TURN:");
-            playerMove(playerTeam, botTeam);
+            playerMove();
 
             System.out.println();
 
             System.out.println("BOT'S TURN:");
-            botMove(playerTeam, botTeam);
+            botMove();
 
             // Regenerate 5 stamina each round for all living characters
             for (Character member : playerTeam.getLivingMembers()) {
@@ -47,18 +54,13 @@ class Game {
             round++;
         }
 
-        // Determine winner
-        if (playerTeam.isDefeated()) {
-            System.out.println("BOT WINS! Better luck next time!");
-        } else {
-            System.out.println("YOU WIN! Congratulations!");
+        if(isEnd()) {
+            endGame();
         }
     }
 
-    private static void playerMove(Team playerTeam, Team botTeam) {
+    private static void playerMove() {
         // Find living characters
-        Character[] livingPlayers = playerTeam.getLivingMembers();
-        Character[] livingBots = botTeam.getLivingMembers();
 
         if (livingPlayers.length == 0)
             return;
@@ -90,6 +92,9 @@ class Game {
                     Character target1 = chooseTarget(botTargets);
                     if (target1 != null) {
                         ((Warrior) playerChar).attack(target1);
+                        if (!target1.isAlive()) {
+                            eliminate(target1);
+                        }
                     }
                     break;
 
@@ -97,6 +102,9 @@ class Game {
                     Character target2 = chooseTarget(botTargets);
                     if (target2 != null) {
                         ((Warrior) playerChar).ultimate(target2);
+                        if (!target2.isAlive()) {
+                            eliminate(target2);
+                        }
                     }
                     break;
 
@@ -120,6 +128,9 @@ class Game {
                     Character target = chooseTarget(botTargets);
                     if (target != null) {
                         ((Mage) playerChar).attack(target);
+                        if (!target.isAlive()) {
+                            eliminate(target);
+                        }
                     }
                     break;
                 case 2:
@@ -185,7 +196,7 @@ class Game {
         return null;
     }
 
-    public static void botMove(Team playerTeam, Team botTeam) {
+    public static void botMove() {
         // Find living bot members and player targets
         Character[] livingBotMembers = botTeam.getLivingMembers();
         Character[] livingPlayerMembers = playerTeam.getLivingMembers();
@@ -218,6 +229,9 @@ class Game {
                 warrior.ultimate(weakestTarget);
             } else {
                 warrior.attack(weakestTarget);
+                if (!weakestTarget.isAlive()) {
+                    eliminate(weakestTarget);
+                }
             }
         }
     }
@@ -239,6 +253,9 @@ class Game {
             Character weakestTarget = findWeakestTarget(playerTargets);
             if (weakestTarget != null) {
                 mage.attack(weakestTarget);
+                if (!weakestTarget.isAlive()) {
+                    eliminate(weakestTarget);
+                }
             }
         }
     }
@@ -280,5 +297,27 @@ class Game {
         System.out.println(playerTeam.toStringOnlyAlive());
         System.out.println("BOT TEAM:");
         System.out.println(botTeam.toStringOnlyAlive());
+    }
+
+    private static void eliminate(Character target) {
+        System.out.println(target.getName() + " has been eliminated!");
+        if (isEnd()) {
+            endGame();
+        }
+        livingPlayers = playerTeam.getLivingMembers(); // Update living players after defeat
+        livingBots = botTeam.getLivingMembers(); // Update living bots after defeat
+    }
+
+    private static boolean isEnd() {
+        return playerTeam.isDefeated() || botTeam.isDefeated();
+    }
+
+    private static void endGame() {
+        if (playerTeam.isDefeated()) {
+            System.out.println("BOT WINS! Better luck next time!");
+        } else if (botTeam.isDefeated()) {
+            System.out.println("YOU WIN! Congratulations!");
+        }
+        System.exit(0);
     }
 }
