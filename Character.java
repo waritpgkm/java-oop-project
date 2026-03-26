@@ -59,7 +59,7 @@ abstract class Character {
 
     // Stamina
     private void setStemina(double stemina) {
-        this.stemina = stemina;
+        this.stemina = stemina > this.max_stemina ? this.max_stemina : stemina < 0 ? 0 : stemina;
     }
     public double getStemina() {
         return this.stemina;

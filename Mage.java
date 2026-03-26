@@ -15,7 +15,7 @@ public class Mage extends Character {
 
     public void healing_allie(Character target) {
         if (getStemina() >= 20) {
-            System.out.printf("%s casts a healing spell on %s for %.1f HP!\n", getName(), target.getName(), getBase_atk() * 0.5);
+            System.out.printf("%s casts a healing spell on %s for %.1f HP!\n", getName(), target.getName(), getBase_atk() * 0.8);
             target.adjustHp(getBase_atk() * 0.8);
             adjustStamina(-20);
         } else {
@@ -25,7 +25,7 @@ public class Mage extends Character {
 
     public void healing_all_allies(Character[] allies) {
         if (getStemina() >= 30) {
-            System.out.printf("%s casts a group healing spell on all allies for %.1f HP!\n", getName(), getBase_atk() * 0.8);
+            System.out.printf("%s casts a group healing spell on all allies for %.1f HP!\n", getName(), getBase_atk() * 0.5);
             for (Character ally : allies) {
                 ally.adjustHp(getBase_atk() * 0.5);
             }
