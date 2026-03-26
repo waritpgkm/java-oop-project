@@ -6,8 +6,10 @@ abstract class Character {
     private double max_stemina;
     private double stemina;
     private double base_atk;
+    private double crit_rate;
+    private double crit_multiplier;
 
-    public Character(String name, String role, double max_hp, double max_stemina, double base_atk) {
+    public Character(String name, String role, double max_hp, double max_stemina, double base_atk, double crit_rate, double crit_multiplier) {
         setName(name);
         setRole(role);
         setMax_hp(max_hp);
@@ -15,6 +17,8 @@ abstract class Character {
         setMax_stemina(max_stemina);
         setStemina(max_stemina);
         setBase_atk(base_atk);
+        setCrit_rate(crit_rate);
+        setCrit_multiplier(crit_multiplier);
     }
 
     // Name
@@ -73,6 +77,22 @@ abstract class Character {
         return this.base_atk;
     }
 
+    private void setCrit_rate(double crit_rate) {
+        this.crit_rate = crit_rate > 1 ? 1 : crit_rate < 0 ? 0 : crit_rate;
+    }
+
+    public double getCrit_multiplier() {
+        return this.crit_multiplier;
+    }
+
+    private void setCrit_multiplier(double crit_multiplier) {
+        this.crit_multiplier = crit_multiplier < 1 ? 1 : crit_multiplier < 0 ? 0 : crit_multiplier;
+    }
+
+    public double getCrit_rate() {
+        return this.crit_rate;
+    }
+
     public void adjustHp(double delta) {
         setHp(getHp() + delta);
     }
@@ -81,7 +101,7 @@ abstract class Character {
         setStemina(getStemina() + delta);
     }
 
-    abstract public void attack(Character target);
+    abstract public boolean attack(Character target);
 
     public boolean isAlive() {
         return this.hp > 0;
