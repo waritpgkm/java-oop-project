@@ -1,16 +1,14 @@
 import java.util.Scanner;
-import java.util.Random;
 
 class Game {
     private static Scanner scanner = new Scanner(System.in);
-    private static Random random = new Random();
 
     public static void main(String[] args) {
         // Create characters
-        Character warrior1 = new Warrior("Aragorn", 100, 50, 20);
-        Character mage1 = new Mage("Gandalf", 80, 60, 25);
-        Character warrior2 = new Warrior("Legolas", 90, 40, 18);
-        Character mage2 = new Mage("Saruman", 70, 70, 30);
+        Character warrior1 = new Warrior("Aragorn", 100, 50, 20, 0.1, 1.8);
+        Character mage1 = new Mage("Gandalf", 80, 60, 25, 0.1, 1.5);
+        Character warrior2 = new Warrior("Legolas", 90, 40, 18, 0.1, 1.8);
+        Character mage2 = new Mage("Saruman", 70, 70, 30, 0.1, 1.5);
 
         // Create teams
         Team playerTeam = new Team("Player Team", new Character[] { warrior1, mage1 });
@@ -216,7 +214,7 @@ class Game {
 
         if (weakestTarget != null) {
             // 50% chance to use ultimate if enough stamina
-            if (warrior.getStemina() >= 30 && random.nextDouble() < 0.5) {
+            if (warrior.getStemina() >= 30 && Math.random() < 0.5) {
                 warrior.ultimate(weakestTarget);
             } else {
                 warrior.attack(weakestTarget);
@@ -231,7 +229,7 @@ class Game {
         if (allyToHeal != null && mage.getStemina() >= 20) {
             // 40% chance to heal all allies if multiple need healing
             Character[] alliesNeedingHealing = getAlliesNeedingHealing(botAllies);
-            if (alliesNeedingHealing.length > 1 && mage.getStemina() >= 30 && random.nextDouble() < 0.4) {
+            if (alliesNeedingHealing.length > 1 && mage.getStemina() >= 30 && Math.random() < 0.4) {
                 mage.healing_all_allies(alliesNeedingHealing);
             } else {
                 mage.healing_allie(allyToHeal);
