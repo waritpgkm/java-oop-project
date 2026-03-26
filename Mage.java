@@ -13,9 +13,9 @@ public class Mage extends Character {
             } else {
                 System.out.printf("%s casts a spell on %s for %.1f damage!\n", getName(), target.getName(),
                         getBase_atk());
-                target.adjustHp(-getBase_atk() * (Math.random() < getCrit_rate() ? getCrit_multiplier() : 1));
-                adjustStamina(-15);
+                target.adjustHp(-getBase_atk());
             }
+            adjustStamina(-15);
         } else {
             System.out.printf("%s is too tired to cast a spell!\n", getName());
         }

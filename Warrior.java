@@ -13,7 +13,7 @@ public class Warrior extends Character {
             } else {
                 System.out.printf("%s swings a sword at %s for %.1f damage!\n", getName(), target.getName(),
                         getBase_atk());
-                target.adjustHp(-getBase_atk() * (Math.random() < getCrit_rate() ? getCrit_multiplier() : 1));
+                target.adjustHp(-getBase_atk());
             }
             adjustStamina(-10);
         } else {
